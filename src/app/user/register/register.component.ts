@@ -1,7 +1,8 @@
 import { Component, } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormGroup,FormControl, Validators } from '@angular/forms';
-
+import IUser from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { RegisterValidators } from '../validators/register-validators';
 
 @Component({
   selector: 'app-register',
@@ -9,14 +10,15 @@ import { FormGroup,FormControl, Validators } from '@angular/forms';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent  {
-constructor(private auth: AngularFireAuth){}
+constructor(private auth: AuthService){}
+inSubmission = false ;
 
 
   name = new FormControl('', [
     Validators.required,
     Validators.minLength(3),])
   email = new FormControl('',[Validators.required , Validators.email])
-  age = new FormControl('' , [Validators.required,
+  age = new FormControl<number | null>(null , [Validators.required,
   Validators.min(18),
   Validators.max(120),
 ])
@@ -43,22 +45,26 @@ constructor(private auth: AngularFireAuth){}
     password : this.password,
     confirm_password : this.confirm_password,
     phoneNumber : this.phoneNumber,
-  })
+  }, [RegisterValidators.match])
 // Register Function 
   async register(){
+    this.inSubmission = true ;
     this.showAlert = true;
     this.alertMsg = 'Please wait your account is being created.';
     this.alertColor = 'blue'
     // Firebase
-    const {email,password} = this.registerForm.value;
     try {
-      const userCred = await this.auth.createUserWithEmailAndPassword(email as string,password as string)
+      await this.auth.createUser(this.registerForm.value as IUser);
+ 
     } catch (error) {
+      console.log(error);
+      
       this.alertMsg = 'Error occured ,Please try again later!';
       this.alertColor = 'red'
+      this.inSubmission = false;
 return
     }
-    this.alertMsg = 'Accoutn has been created';
+    this.alertMsg = 'Account has been created';
     this.alertColor = 'green'
     
     

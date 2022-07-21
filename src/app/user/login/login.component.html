@@ -1,3 +1,4 @@
+<app-alert *ngIf="showAlert" [colorBG]="alertColor">{{alertMsg}}</app-alert>
 <form #loginForm="ngForm" (ngSubmit)="login()" >
     <!-- Email -->
     <div class="mb-3">
@@ -28,7 +29,7 @@ duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400" 
 <p *ngIf="password.errors && password.touched && password.dirty" class="text-red-400"> Password is Invalid</p>
    
 </div>
-    <button [disabled]="loginForm.invalid" type="submit" class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition
+    <button [disabled]="loginForm.invalid || inSubmission" type="submit" class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition
 hover:bg-indigo-500 disabled:opacity-50 disabled:bg-indigo-400">
         Submit
     </button>

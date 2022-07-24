@@ -11,11 +11,17 @@ export class InputComponent implements OnInit {
 @Input() type = 'text'
 @Input() placeholder = ''
 @Input() format = ''; 
+@Input() passField = false;
 
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  togglePassword(){
+    this.type ==='password' ? this.type = 'text' :this.type = 'password'
+
   }
 
 }

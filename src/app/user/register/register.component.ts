@@ -2,7 +2,9 @@ import { Component, } from '@angular/core';
 import { FormGroup,FormControl, Validators } from '@angular/forms';
 import IUser from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmailTaken } from '../validators/email-taken';
 import { RegisterValidators } from '../validators/register-validators';
+
 
 @Component({
   selector: 'app-register',
@@ -10,14 +12,14 @@ import { RegisterValidators } from '../validators/register-validators';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent  {
-constructor(private auth: AuthService){}
+constructor(private auth: AuthService , private emailTaken: EmailTaken){}
 inSubmission = false ;
 
 
   name = new FormControl('', [
     Validators.required,
     Validators.minLength(3),])
-  email = new FormControl('',[Validators.required , Validators.email])
+  email = new FormControl('',[Validators.required , Validators.email],[this.emailTaken.validate])
   age = new FormControl<number | null>(null , [Validators.required,
   Validators.min(18),
   Validators.max(120),
@@ -31,7 +33,6 @@ inSubmission = false ;
     Validators.required,
     Validators.min(17),
   Validators.max(17),
-
   ]);
 
   showAlert= false;
@@ -45,7 +46,7 @@ inSubmission = false ;
     password : this.password,
     confirm_password : this.confirm_password,
     phoneNumber : this.phoneNumber,
-  }, [RegisterValidators.match])
+  }, [RegisterValidators.match('password','confirm_password')])
 // Register Function 
   async register(){
     this.inSubmission = true ;
@@ -66,7 +67,5 @@ return
     }
     this.alertMsg = 'Account has been created';
     this.alertColor = 'green'
-    
-    
   }
 }

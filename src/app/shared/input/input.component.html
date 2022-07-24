@@ -1,5 +1,11 @@
 <input [mask]="format" [formControl]="control" [type]="type" class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition
 duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400" [placeholder]="placeholder" [dropSpecialCharacters]="false"/>
+
+<div *ngIf="passField" (click)="togglePassword()">
+    <svg   xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+      </svg>
+</div>
 <ng-container *ngIf="control.touched && control.dirty">
    <p class="text-red-400" *ngIf="control.errors?.pattern">
     Password must be at lest 8 characters long, have 1 
@@ -15,8 +21,9 @@ duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400" 
 <!-- Age -->
 <p class="text-red-400" *ngIf="control.errors?.min">Under age</p>
 <p class="text-red-400" *ngIf="control.errors?.max">Too old</p>
-<!-- Phone Number  -->
-<!-- <p class="text-red-400" *ngIf="control.errors?.max">
-    The value you inputted is characters long .It must be at least 13 characters long
-</p> -->
+<!-- Confirm Password -->
+<p class="text-red-400" *ngIf="control.errors?.noMatch">Password Do not match</p>
+<!-- Email -->
+<p class="text-red-400" *ngIf="control.errors?.emailTaken">Email Taken!</p>
+
 </ng-container>
